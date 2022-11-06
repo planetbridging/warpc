@@ -14,6 +14,7 @@ async function testing() {
   var data = await oAccess.readLargeFile(tmpPath);
   var jData = await oAccess.xmlToJson(data);
   var lstReqs = new Map();
+  var lstReqObjs = new Map();
 
   var reqInputs = jData["definitions"]["types"][0]["xsd:schema"][0];
 
@@ -25,13 +26,44 @@ async function testing() {
     //console.log("---" + rt + "---");
     var d = reqTypes[rt];
     //console.log(d);
+    var lstObjs = [];
+    var reqName = "";
+    var found = false;
     if (Object.keys(d).includes("xsd:all")) {
-      console.log(d["xsd:all"][0]["xsd:element"]);
+      var lstElements = d["xsd:all"][0]["xsd:element"];
+      for (var e in lstElements) {
+        if (Object.keys(lstElements[e]).includes("ATTR")) {
+          var subData = lstElements[e]["ATTR"];
+          var subKeys = Object.keys(subData);
+          var tmpName = "";
+          var tmpType = "";
+          var tmpDesc = "";
+          var lstOthers = [];
+          for (var sk in subKeys) {
+            if (subKeys[sk] == "name") {
+              tmpName = subData["name"];
+            } else if (subKeys[sk] == "type") {
+              tmpType = subData["type"];
+            } else if (subKeys[sk] == "description") {
+              tmpDesc = subData["description"];
+            } else {
+              lstOthers.push([subKeys[sk], subData[subKeys[sk]]]);
+            }
+          }
+
+          var tmpReqObj = new oBjs.objReq(tmpName, tmpType, tmpDesc, lstOthers);
+          lstObjs.push(tmpReqObj);
+        }
+      }
     }
 
     if (Object.keys(d["ATTR"]).includes("name")) {
-      var reqName = d["ATTR"]["name"];
-      //console.log(reqName);
+      reqName = d["ATTR"]["name"];
+      found = true;
+    }
+
+    if (found && lstObjs.length > 0) {
+      lstReqObjs.set(reqName, lstObjs);
     }
   }
 
