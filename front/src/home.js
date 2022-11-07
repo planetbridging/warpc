@@ -42,6 +42,7 @@ import {
 
 import Panel from "./panel";
 import Results from "./results";
+import ExportAllToWord from "./exportAll";
 
 var ioLocation = "";
 var testing = true;
@@ -163,6 +164,10 @@ class HomePage extends React.Component {
                   </BreadcrumbItem>
                   {sLinks}
                 </Breadcrumb>
+              </WrapItem>
+              <Spacer />
+              <WrapItem>
+                <ExportAllToWord />
               </WrapItem>
             </Wrap>
 
