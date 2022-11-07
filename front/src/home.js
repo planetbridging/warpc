@@ -167,7 +167,7 @@ class HomePage extends React.Component {
               </WrapItem>
               <Spacer />
               <WrapItem>
-                <ExportAllToWord />
+                <ExportAllToWord chatSocket={chatSocket} />
               </WrapItem>
             </Wrap>
 
