@@ -30,15 +30,22 @@ import {
   PopoverAnchor,
 } from "@chakra-ui/react";
 import { v4 as uuidv4 } from "uuid";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  useParams,
+} from "react-router-dom";
 
 class Panel extends React.Component {
   state = { search: "" };
 
-  lstReqObjs() {
+  lstDyn(lst, searchType) {
     const { txtSearch } = this.state;
-    var lst = this.props.lstReqObjs;
     var lstBtns = lst.map((i) => {
       var found = false;
+      const searchItem = i;
       if (txtSearch != "" && i.toLowerCase().includes(txtSearch)) {
         found = true;
       }
@@ -49,37 +56,17 @@ class Panel extends React.Component {
 
       if (found) {
         return (
-          <Button key={uuidv4()} p="3" colorScheme="orange">
+          <Link
+            to={"/" + searchType + "/" + searchItem}
+            as={Button}
+            key={uuidv4()}
+            p="3"
+            colorScheme="orange"
+          >
             <Text as="u" fontSize="xs">
               {i}
             </Text>
-          </Button>
-        );
-      }
-    });
-    return lstBtns;
-  }
-
-  lstReq() {
-    const { txtSearch } = this.state;
-    var lst = this.props.lstReq;
-    var lstBtns = lst.map((i) => {
-      var found = false;
-      if (txtSearch != "" && i.toLowerCase().includes(txtSearch)) {
-        found = true;
-      }
-
-      if (txtSearch == "" || txtSearch == undefined || txtSearch == null) {
-        found = true;
-      }
-
-      if (found) {
-        return (
-          <Button key={uuidv4()} p="3" colorScheme="orange">
-            <Text as="u" fontSize="xs">
-              {i}
-            </Text>
-          </Button>
+          </Link>
         );
       }
     });
@@ -91,24 +78,8 @@ class Panel extends React.Component {
   }
 
   render() {
-    var lst1 = this.lstReqObjs();
-    var lst2 = this.lstReq();
-
-    /*var btnSearch = <Square flex="1" color="black">
-<Popover>
-  <PopoverTrigger>
-    <Button colorScheme="blue">Search</Button>
-  </PopoverTrigger>
-  <PopoverContent>
-    <PopoverArrow />
-    <PopoverCloseButton />
-    <PopoverHeader>
-      <Input placeholder="search" />
-    </PopoverHeader>
-    <PopoverBody>Search for objects</PopoverBody>
-  </PopoverContent>
-</Popover>
-</Square>;*/
+    var lst1 = this.lstDyn(this.props.lstReq, "lstReq");
+    var lst2 = this.lstDyn(this.props.lstReqObjs, "lstReqObjs");
 
     var txtSearch = <Input onChange={(e) => this.updateSearch(e)} />;
 

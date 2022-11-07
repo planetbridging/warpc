@@ -13,6 +13,26 @@ async function multiIoPass(io, oReadData) {
       socket.emit("lstReq", text);
     });
 
+    socket.on("lstReqData", async (data) => {
+      if (oReadData.lstReqs.has(data)) {
+        //console.log(oReadData.lstReqs);
+        //console.log(oReadData.lstReqs.get(data));
+
+        if (oReadData.lstReqObjs.has(oReadData.lstReqs.get(data))) {
+          var j = {
+            title: data,
+            subTitle: oReadData.lstReqs.get(data),
+            lstParam: oReadData.lstReqObjs.get(oReadData.lstReqs.get(data)),
+          };
+          var jTxt = JSON.stringify(j);
+          socket.emit("lstReqData", jTxt);
+          //console.log(oReadData.lstReqObjs.get(oReadData.lstReqs.get(data)));
+        }
+      }
+      /*let text = oReadData.lstSearchItem1.toString();
+      socket.emit("lstReq", text);*/
+    });
+
     socket.on("lstReqObjs", async (data) => {
       let text = oReadData.lstSearchItem2.toString();
       socket.emit("lstReqObjs", text);

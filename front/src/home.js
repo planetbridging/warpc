@@ -41,6 +41,7 @@ import {
 } from "react-router-dom";
 
 import Panel from "./panel";
+import Results from "./results";
 
 var ioLocation = "";
 var testing = true;
@@ -133,6 +134,34 @@ class HomePage extends React.Component {
               <Route exact path="/">
                 <Panel lstReq={lstReq} lstReqObjs={lstReqObjs} />
               </Route>
+
+              <Route
+                exact
+                path="/lstReqObjs/:id"
+                render={({ match }) => (
+                  <Results
+                    id={match.params.id}
+                    lstReq={lstReqObjs}
+                    lstReqObjs={lstReqObjs}
+                    chatSocket={chatSocket}
+                    searchType={"lstReqObjs"}
+                  />
+                )}
+              />
+
+              <Route
+                exact
+                path="/lstReq/:id"
+                render={({ match }) => (
+                  <Results
+                    id={match.params.id}
+                    lstReq={lstReqObjs}
+                    lstReqObjs={lstReqObjs}
+                    chatSocket={chatSocket}
+                    searchType={"lstReq"}
+                  />
+                )}
+              />
             </Switch>
           </Stack>
         </Router>

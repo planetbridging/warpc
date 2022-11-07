@@ -54,7 +54,9 @@ class objReadWsld {
               } else if (subKeys[sk] == "description") {
                 tmpDesc = subData["description"];
               } else {
-                lstOthers.push([subKeys[sk], subData[subKeys[sk]]]);
+                if (tmpName != subData[subKeys[sk]]) {
+                  lstOthers.push([subKeys[sk], subData[subKeys[sk]]]);
+                }
               }
             }
 
