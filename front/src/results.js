@@ -32,7 +32,7 @@ import {
 } from "@chakra-ui/react";
 
 class Results extends React.Component {
-  state = { rawData: {} };
+  state = { rawData: {}, dyLinkPath: "" };
 
   componentDidMount() {
     this.loadSocket();
@@ -48,6 +48,13 @@ class Results extends React.Component {
       });
 
       chatSocket.emit("lstReqData", this.props.id);
+    } else if (this.props.searchType == "lstReqObjs") {
+      chatSocket.on("lstReqObjsData", (data) => {
+        //console.log(data);
+        this.setState({ rawData: JSON.parse(data) });
+      });
+
+      chatSocket.emit("lstReqObjsData", this.props.id);
     }
   }
 
@@ -95,15 +102,33 @@ class Results extends React.Component {
             </soap:Envelope>`}
           />
         );
+      } else if (this.props.searchType == "lstReqObjs") {
+        console.log(rawData);
+        for (var sub in rawData) {
+          //lst.push(this.getCodeReq(true, rawData["lstParam"][sub]["name"]));
+          //lst.push(this.getCodeReq(false, rawData["lstParam"][sub]["name"]));
+          lst.push(
+            <Code>
+              {"<" + rawData[sub]["name"] + ">"}
+              {"</" + rawData[sub]["name"] + ">"}
+            </Code>
+          );
+        }
       }
       return lst;
     }
   }
 
   render() {
+    const { dyLinkPath } = this.state;
     //console.log(searchType);
 
     var id = this.props.id;
+
+    if (dyLinkPath != window.location.pathname) {
+      this.props.passCurrentLink(window.location.pathname);
+      this.setState({ dyLinkPath: window.location.pathname });
+    }
 
     return (
       <Stack>

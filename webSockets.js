@@ -38,6 +38,30 @@ async function multiIoPass(io, oReadData) {
       socket.emit("lstReqObjs", text);
     });
 
+    socket.on("lstReqObjsData", async (data) => {
+      if (oReadData.lstReqObjs.has(data)) {
+        //console.log(oReadData.lstReqObjs.get(data));
+        var j = oReadData.lstReqObjs.get(data);
+        var jTxt = JSON.stringify(j);
+        socket.emit("lstReqObjsData", jTxt);
+      }
+      /*if (oReadData.lstReqs.has(data)) {
+        //console.log(oReadData.lstReqs);
+        //console.log(oReadData.lstReqs.get(data));
+
+        if (oReadData.lstReqObjs.has(oReadData.lstReqs.get(data))) {
+          var j = {
+            title: data,
+            subTitle: oReadData.lstReqs.get(data),
+            lstParam: oReadData.lstReqObjs.get(oReadData.lstReqs.get(data)),
+          };
+          var jTxt = JSON.stringify(j);
+          socket.emit("lstReqObjsData", jTxt);
+          //console.log(oReadData.lstReqObjs.get(oReadData.lstReqs.get(data)));
+        }
+      }*/
+    });
+
     socket.conn.on("close", (reason) => {
       connectCounter = socket.client.conn.server.clientsCount;
       socket.broadcast.emit("clientCounter", connectCounter.toString());

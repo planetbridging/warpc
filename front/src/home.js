@@ -55,7 +55,7 @@ if (testing) {
 }
 
 class HomePage extends React.Component {
-  state = { clientCounter: 0, lstReq: [], lstReqObjs: [] };
+  state = { clientCounter: 0, lstReq: [], lstReqObjs: [], dyLinkPath: "/" };
 
   componentDidMount() {
     this.loadSocket();
@@ -89,9 +89,45 @@ class HomePage extends React.Component {
     chatSocket.emit("lstReqObjs", "");
   }
 
+  dynamicCreateLinks() {
+    const { dyLinkPath } = this.state;
+    var dLink = dyLinkPath; //window.location.pathname;
+    var sLink = dLink.split("/");
+    console.log(dLink);
+
+    var lstBtns = sLink.map((i, index) => {
+      const tmp = i;
+      if (i != "") {
+        var linkpath = "/";
+        if (index == 1) {
+          linkpath += i;
+        } else if (index == 2) {
+          linkpath = dLink;
+        }
+        return (
+          <BreadcrumbItem key={uuidv4()}>
+            <Text as="u">
+              <Link to={linkpath}>{i}</Link>
+            </Text>
+          </BreadcrumbItem>
+        );
+      }
+    });
+    return lstBtns;
+  }
+
+  passCurrentLink(path) {
+    this.setState({ dyLinkPath: path });
+  }
+
   render() {
-    const { clientCounter, lstReq, lstReqObjs } = this.state;
-    //   <Image src={logo} h="30px" />
+    const { clientCounter, lstReq, lstReqObjs, dyLinkPath } = this.state;
+
+    if (window.location.pathname != dyLinkPath) {
+      this.setState({ dyLinkPath: window.location.pathname });
+    }
+
+    var sLinks = this.dynamicCreateLinks();
     return (
       <Box w="100%" minH={"100vh"} bg="#25aae2">
         <Router>
@@ -125,7 +161,7 @@ class HomePage extends React.Component {
                       </Link>
                     </Text>
                   </BreadcrumbItem>
-                  {"hello"}
+                  {sLinks}
                 </Breadcrumb>
               </WrapItem>
             </Wrap>
@@ -145,6 +181,7 @@ class HomePage extends React.Component {
                     lstReqObjs={lstReqObjs}
                     chatSocket={chatSocket}
                     searchType={"lstReqObjs"}
+                    passCurrentLink={this.passCurrentLink.bind(this)}
                   />
                 )}
               />
@@ -159,6 +196,7 @@ class HomePage extends React.Component {
                     lstReqObjs={lstReqObjs}
                     chatSocket={chatSocket}
                     searchType={"lstReq"}
+                    passCurrentLink={this.passCurrentLink.bind(this)}
                   />
                 )}
               />
