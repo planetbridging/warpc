@@ -18,6 +18,8 @@
   "homepage": "https://github.com/planetbridging/warpc#readme",
   "dependencies": {
     "axios": "^1.1.3",
+    "express": "^4.18.2",
+    "socket.io": "^4.5.3",
     "xml2js": "^0.4.23"
   }
 }
