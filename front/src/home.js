@@ -40,6 +40,8 @@ import {
   useParams,
 } from "react-router-dom";
 
+import Panel from "./panel";
+
 var ioLocation = "";
 var testing = true;
 var chatSocket = null;
@@ -87,7 +89,7 @@ class HomePage extends React.Component {
   }
 
   render() {
-    const { clientCounter } = this.state;
+    const { clientCounter, lstReq, lstReqObjs } = this.state;
     //   <Image src={logo} h="30px" />
     return (
       <Box w="100%" minH={"100vh"} bg="#25aae2">
@@ -125,31 +127,11 @@ class HomePage extends React.Component {
                   {"hello"}
                 </Breadcrumb>
               </WrapItem>
-              <Spacer />
-              <WrapItem>
-                <Square flex="1" color="black">
-                  <Popover>
-                    <PopoverTrigger>
-                      <Button colorScheme="blue">Search</Button>
-                    </PopoverTrigger>
-                    <PopoverContent>
-                      <PopoverArrow />
-                      <PopoverCloseButton />
-                      <PopoverHeader>
-                        <Input placeholder="search" />
-                      </PopoverHeader>
-                      <PopoverBody>
-                        Are you sure you want to have that milkshake?
-                      </PopoverBody>
-                    </PopoverContent>
-                  </Popover>
-                </Square>
-              </WrapItem>
             </Wrap>
 
             <Switch>
               <Route exact path="/">
-                hello
+                <Panel lstReq={lstReq} lstReqObjs={lstReqObjs} />
               </Route>
             </Switch>
           </Stack>
