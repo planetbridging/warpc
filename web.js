@@ -9,6 +9,8 @@ var app = express(),
 const oWebSocks = require("./webSockets");
 const oBjs = require("./objs");
 
+app.use("/", express.static(__dirname + "/front/build/"));
+
 async function startWeb() {
   console.log("starting web hosting");
   startHosting();
@@ -20,7 +22,8 @@ async function startHosting() {
   var tmpWebPath = "https://api.astutepayroll.com/webservice/?wsdl";
 
   var oReadData = new oBjs.objReadWsld();
-  oReadData.loadLocalXml(tmpPath);
+  //oReadData.loadLocalXml(tmpPath);
+  oReadData.webLinkLoad(tmpWebPath);
 
   var server_http = http.createServer(app);
   //multiIoPass(server_https);

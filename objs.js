@@ -17,6 +17,12 @@ class objReadWsld {
     this.readData(jData);
   }
 
+  async webLinkLoad(url) {
+    var data = await axios.get(url);
+    var jData = await oAccess.xmlToJson(data["data"]);
+    this.readData(jData);
+  }
+
   async readData(jData) {
     var lstReqs = new Map();
     var lstReqObjs = new Map();

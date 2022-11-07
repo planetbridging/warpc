@@ -45,7 +45,7 @@ import Results from "./results";
 import ExportAllToWord from "./exportAll";
 
 var ioLocation = "";
-var testing = true;
+var testing = false;
 var chatSocket = null;
 
 if (testing) {
