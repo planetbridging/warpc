@@ -44,7 +44,7 @@ async function startHosting() {
   var server_http = http.createServer(app);
   //multiIoPass(server_https);
   //ioGet.attach(server_https);
-  server_http.listen(5000, function () {
+  server_http.listen(5000, "0.0.0.0", function () {
     console.log("server running at 5000");
   });
 
