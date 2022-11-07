@@ -20,6 +20,8 @@ class objReadWsld {
   async readData(jData) {
     var lstReqs = new Map();
     var lstReqObjs = new Map();
+    var lstSearchItem1 = [];
+    var lstSearchItem2 = [];
 
     var reqInputs = jData["definitions"]["types"][0]["xsd:schema"][0];
 
@@ -69,6 +71,9 @@ class objReadWsld {
 
       if (found && lstObjs.length > 0) {
         lstReqObjs.set(reqName, lstObjs);
+        if (!lstSearchItem2.includes(reqName)) {
+          lstSearchItem2.push(reqName);
+        }
       }
     }
 
@@ -81,10 +86,15 @@ class objReadWsld {
           var reqName = lst[k]["ATTR"]["name"];
           var reqKey = item["type"].split("tns:")[1];
           lstReqs.set(reqName, reqKey);
+          if (!lstSearchItem1.includes(reqName)) {
+            lstSearchItem1.push(reqName);
+          }
         }
       }
     }
 
+    this.lstSearchItem1 = lstSearchItem1;
+    this.lstSearchItem2 = lstSearchItem2;
     this.lstReqs = lstReqs;
     this.lstReqObjs = lstReqObjs;
   }
